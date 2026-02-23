@@ -220,12 +220,13 @@ function App() {
               >
                 {animatingId?.id === player.id && animatingId.type === 'murder' && (
                   <div className="shatter-container">
-                    <div className="shard s1"></div>
-                    <div className="shard s2"></div>
-                    <div className="shard s3"></div>
-                    <div className="shard s4"></div>
-                    <div className="shard s5"></div>
-                    <div className="shard s6"></div>
+                    {[...Array(12)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className={`shard s${i+1}`} 
+                        style={{ backgroundImage: `url(${PEACOCK_BASE}${player.imageUrl})` }}
+                      ></div>
+                    ))}
                   </div>
                 )}
                 <div className="image-container">

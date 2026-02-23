@@ -207,6 +207,17 @@ main {
   animation: lift-and-smash 1.2s ease-in-out forwards;
   z-index: 100;
   perspective: 1000px;
+  overflow: visible; /* Allow shards to fly out */
+}
+
+.player-card.murder .image-container,
+.player-card.murder .player-info {
+  animation: hide-original 1.2s forwards;
+}
+
+@keyframes hide-original {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 .shatter-container {
@@ -218,77 +229,50 @@ main {
 
 .shard {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 80px;
-  height: 80px;
-  background: var(--card-bg);
-  border: 1px solid #666;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
   opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
 }
 
-.s1 { clip-path: polygon(0 0, 100% 0, 50% 50%); animation: shard-fly-1 0.8s 0.5s ease-out forwards; }
-.s2 { clip-path: polygon(100% 0, 100% 100%, 50% 50%); animation: shard-fly-2 0.8s 0.5s ease-out forwards; }
-.s3 { clip-path: polygon(100% 100%, 0 100%, 50% 50%); animation: shard-fly-3 0.8s 0.5s ease-out forwards; }
-.s4 { clip-path: polygon(0 100%, 0 0, 50% 50%); animation: shard-fly-4 0.8s 0.5s ease-out forwards; }
-.s5 { clip-path: polygon(20% 20%, 80% 20%, 50% 50%); background: #8b0000; animation: shard-fly-5 0.8s 0.4s ease-out forwards; }
-.s6 { clip-path: polygon(30% 70%, 70% 70%, 50% 50%); background: #222; animation: shard-fly-6 0.8s 0.6s ease-out forwards; }
+/* Shard clip-paths and animations (starts at 50% of the 1.2s card animation) */
+.s1  { clip-path: polygon(0 0, 33% 0, 25% 25%, 0 33%); background-position: 0 0; animation-name: fly-1; animation-delay: 0.5s; }
+.s2  { clip-path: polygon(33% 0, 66% 0, 75% 25%, 33% 33%); background-position: 50% 0; animation-name: fly-2; animation-delay: 0.5s; }
+.s3  { clip-path: polygon(66% 0, 100% 0, 100% 33%, 66% 33%); background-position: 100% 0; animation-name: fly-3; animation-delay: 0.5s; }
+.s4  { clip-path: polygon(0 33%, 25% 25%, 33% 66%, 0 66%); background-position: 0 50%; animation-name: fly-4; animation-delay: 0.5s; }
+.s5  { clip-path: polygon(25% 25%, 75% 25%, 66% 66%, 33% 66%); background-position: 50% 50%; animation-name: fly-5; animation-delay: 0.5s; }
+.s6  { clip-path: polygon(75% 25%, 100% 33%, 100% 66%, 66% 66%); background-position: 100% 50%; animation-name: fly-6; animation-delay: 0.5s; }
+.s7  { clip-path: polygon(0 66%, 33% 66%, 25% 75%, 0 100%); background-position: 0 100%; animation-name: fly-7; animation-delay: 0.5s; }
+.s8  { clip-path: polygon(33% 66%, 66% 66%, 75% 75%, 33% 100%); background-position: 50% 100%; animation-name: fly-8; animation-delay: 0.5s; }
+.s9  { clip-path: polygon(66% 66%, 100% 66%, 100% 100%, 75% 75%); background-position: 100% 100%; animation-name: fly-9; animation-delay: 0.5s; }
+.s10 { clip-path: polygon(25% 25%, 50% 50%, 33% 66%); background: #8b0000; animation-name: fly-10; animation-delay: 0.4s; }
+.s11 { clip-path: polygon(75% 25%, 66% 66%, 50% 50%); background: #222; animation-name: fly-11; animation-delay: 0.6s; }
+.s12 { clip-path: polygon(33% 33%, 66% 33%, 50% 50%); background: #8b0000; animation-name: fly-12; animation-delay: 0.5s; }
 
 @keyframes lift-and-smash {
-  0% { 
-    transform: scale(1) translateY(0); 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-  }
-  40% { 
-    transform: scale(1.2) translateY(-20px) rotateX(10deg); 
-    box-shadow: 0 30px 50px rgba(0,0,0,0.7);
-    filter: brightness(1.1);
-  }
-  45% {
-    transform: scale(1.25) translateY(-25px) rotateX(15deg);
-    filter: brightness(1.2);
-  }
-  50% { 
-    transform: scale(0.8) translateY(0) rotateX(0); 
-    box-shadow: 0 0 0 rgba(0,0,0,0);
-    filter: brightness(3) contrast(2);
-    opacity: 1;
-  }
-  55% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  100% { 
-    opacity: 0;
-    transform: scale(0);
-  }
+  0% { transform: scale(1) translateY(0); box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+  40% { transform: scale(1.2) translateY(-40px) rotateX(15deg); box-shadow: 0 40px 60px rgba(0,0,0,0.7); filter: brightness(1.1); }
+  50% { transform: scale(0.9) translateY(0); filter: brightness(3) contrast(2); }
+  100% { transform: scale(0.9) translateY(0); opacity: 0; }
 }
 
-@keyframes shard-fly-1 {
-  0% { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; }
-  100% { transform: translate(-200%, -250%) rotate(-120deg) scale(0.5); opacity: 0; }
-}
-@keyframes shard-fly-2 {
-  0% { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; }
-  100% { transform: translate(200%, -200%) rotate(120deg) scale(0.5); opacity: 0; }
-}
-@keyframes shard-fly-3 {
-  0% { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; }
-  100% { transform: translate(180%, 250%) rotate(180deg) scale(0.5); opacity: 0; }
-}
-@keyframes shard-fly-4 {
-  0% { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; }
-  100% { transform: translate(-250%, 180%) rotate(-180deg) scale(0.5); opacity: 0; }
-}
-@keyframes shard-fly-5 {
-  0% { transform: translate(-50%, -50%) rotate(0) scale(1.2); opacity: 1; }
-  100% { transform: translate(50%, -350%) rotate(360deg) scale(0.3); opacity: 0; }
-}
-@keyframes shard-fly-6 {
-  0% { transform: translate(-50%, -50%) rotate(0) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, 350%) rotate(-360deg) scale(0.3); opacity: 0; }
-}
+@keyframes fly-1  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-300px, -300px) rotate(-180deg); } }
+@keyframes fly-2  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(0, -350px) rotate(120deg); } }
+@keyframes fly-3  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(300px, -300px) rotate(180deg); } }
+@keyframes fly-4  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-350px, 0) rotate(-120deg); } }
+@keyframes fly-5  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(20px, 20px) scale(1.5) rotate(360deg); } }
+@keyframes fly-6  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(350px, 0) rotate(120deg); } }
+@keyframes fly-7  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-300px, 300px) rotate(-180deg); } }
+@keyframes fly-8  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(0, 350px) rotate(120deg); } }
+@keyframes fly-9  { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(300px, 300px) rotate(180deg); } }
+@keyframes fly-10 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(-100px, -400px) rotate(360deg); } }
+@keyframes fly-11 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(100px, 400px) rotate(-360deg); } }
+@keyframes fly-12 { 0% { opacity: 1; transform: translate(0,0) rotate(0); } 100% { opacity: 0; transform: translate(400px, -100px) rotate(720deg); } }
 
 .player-card.banish {
   animation: banish-slide 0.8s ease-in forwards;
