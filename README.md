@@ -1,5 +1,7 @@
 # 🏰 The Traitors Season 4: Heads-Up Dashboard
 
+**[Live Dashboard](https://mike10010100.github.io/traitors-s4-dashboard/)**
+
 A specialized, interactive heads-up display (HUD) for tracking the remaining and eliminated players in **The Traitors US Season 4**. Built with React, TypeScript, and Vite, this dashboard uses official Peacock headshots and features local persistence to keep your game state saved during the finale.
 
 ![Traitors Dashboard](https://www.peacocktv.com/blog/sites/peacock/files/2025/11/1920_traitors_s4.jpg)

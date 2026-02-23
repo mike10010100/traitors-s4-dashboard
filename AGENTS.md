@@ -1,5 +1,7 @@
 # 🤖 AGENTS.md: Traitors Dashboard
 
+**Live URL:** [https://mike10010100.github.io/traitors-s4-dashboard/](https://mike10010100.github.io/traitors-s4-dashboard/)
+
 This file provides architectural context and instructions for AI agents or developers interacting with the Traitors Season 4 Dashboard.
 
 ## 🏗️ Architecture
