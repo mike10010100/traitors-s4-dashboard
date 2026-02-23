@@ -14,29 +14,29 @@ const PEACOCK_BASE = 'https://www.peacocktv.com';
 const STORAGE_KEY = 'traitors_s4_state';
 
 const initialPlayers: Player[] = [
-  { id: 1, name: "Natalie Anderson", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00016.png", role: 'Faithful', status: 'Banished' },
-  { id: 2, name: "Yam Yam", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00024.png", role: 'Faithful', status: 'Murdered' },
-  { id: 3, name: "Mark Ballas", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00013.png", role: 'Faithful', status: 'Remaining' },
-  { id: 4, name: "Rob Cesternino", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00018.png", role: 'Faithful', status: 'Murdered' },
-  { id: 5, name: "Stephen Colletti", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00021.png", role: 'Unknown', status: 'Eliminated' },
-  { id: 6, name: "Candiace Dillard Bassett", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00003.png", role: 'Traitor', status: 'Banished' },
-  { id: 7, name: "Ron Funches", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00020.png", role: 'Faithful', status: 'Banished' },
-  { id: 8, name: "Maura Higgins", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00004.png", role: 'Faithful', status: 'Remaining' },
-  { id: 9, name: "Donna Kelce", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00007.png", role: 'Traitor', status: 'Banished' },
-  { id: 10, name: "Kristen Kish", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00012.png", role: 'Faithful', status: 'Murdered' },
-  { id: 11, name: "Tara Lipinski", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00022.png", role: 'Faithful', status: 'Remaining' },
-  { id: 12, name: "Dorinda Medley", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00008.png", role: 'Faithful', status: 'Murdered' },
-  { id: 13, name: "Tiffany Mitchell", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00023.png", role: 'Faithful', status: 'Banished' },
-  { id: 14, name: "Monet X Change", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00015.png", role: 'Faithful', status: 'Murdered' },
-  { id: 15, name: "Eric Nam", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00009.png", role: 'Traitor', status: 'Remaining' },
-  { id: 16, name: "Michael Rapaport", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00014.png", role: 'Faithful', status: 'Banished' },
-  { id: 17, name: "Rob Rausch", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00019.png", role: 'Traitor', status: 'Remaining' },
-  { id: 18, name: "Lisa Rinna", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00002.png", role: 'Traitor', status: 'Banished' },
-  { id: 19, name: "Caroline Stanbury", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00005.png", role: 'Faithful', status: 'Murdered' },
-  { id: 20, name: "Ian Terry", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00010.png", role: 'Faithful', status: 'Murdered' },
-  { id: 21, name: "Colton Underwood", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00006.png", role: 'Faithful', status: 'Murdered' },
-  { id: 22, name: "Johnny Weir", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00011.png", role: 'Faithful', status: 'Remaining' },
-  { id: 23, name: "Porsha Williams", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00017.png", role: 'Faithful', status: 'Banished' },
+  { id: 1, name: "Natalie Anderson", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00016.png", role: 'Unknown', status: 'Remaining' },
+  { id: 2, name: "Yam Yam", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00024.png", role: 'Unknown', status: 'Remaining' },
+  { id: 3, name: "Mark Ballas", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00013.png", role: 'Unknown', status: 'Remaining' },
+  { id: 4, name: "Rob Cesternino", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00018.png", role: 'Unknown', status: 'Remaining' },
+  { id: 5, name: "Stephen Colletti", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00021.png", role: 'Unknown', status: 'Remaining' },
+  { id: 6, name: "Candiace Dillard Bassett", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00003.png", role: 'Unknown', status: 'Remaining' },
+  { id: 7, name: "Ron Funches", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00020.png", role: 'Unknown', status: 'Remaining' },
+  { id: 8, name: "Maura Higgins", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00004.png", role: 'Unknown', status: 'Remaining' },
+  { id: 9, name: "Donna Kelce", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00007.png", role: 'Unknown', status: 'Remaining' },
+  { id: 10, name: "Kristen Kish", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00012.png", role: 'Unknown', status: 'Remaining' },
+  { id: 11, name: "Tara Lipinski", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00022.png", role: 'Unknown', status: 'Remaining' },
+  { id: 12, name: "Dorinda Medley", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00008.png", role: 'Unknown', status: 'Remaining' },
+  { id: 13, name: "Tiffany Mitchell", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00023.png", role: 'Unknown', status: 'Remaining' },
+  { id: 14, name: "Monet X Change", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00015.png", role: 'Unknown', status: 'Remaining' },
+  { id: 15, name: "Eric Nam", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00009.png", role: 'Unknown', status: 'Remaining' },
+  { id: 16, name: "Michael Rapaport", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00014.png", role: 'Unknown', status: 'Remaining' },
+  { id: 17, name: "Rob Rausch", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00019.png", role: 'Unknown', status: 'Remaining' },
+  { id: 18, name: "Lisa Rinna", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00002.png", role: 'Unknown', status: 'Remaining' },
+  { id: 19, name: "Caroline Stanbury", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00005.png", role: 'Unknown', status: 'Remaining' },
+  { id: 20, name: "Ian Terry", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00010.png", role: 'Unknown', status: 'Remaining' },
+  { id: 21, name: "Colton Underwood", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00006.png", role: 'Unknown', status: 'Remaining' },
+  { id: 22, name: "Johnny Weir", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00011.png", role: 'Unknown', status: 'Remaining' },
+  { id: 23, name: "Porsha Williams", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00017.png", role: 'Unknown', status: 'Remaining' },
 ];
 
 function App() {
@@ -45,19 +45,30 @@ function App() {
     return saved ? JSON.parse(saved) : initialPlayers;
   });
 
+  const [episode, setEpisode] = useState(() => {
+    return Number(localStorage.getItem('traitors_episode') || 1);
+  });
+
+  const [animatingId, setAnimatingId] = useState<{id: number, type: 'murder' | 'banish'} | null>(null);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
   }, [players]);
 
-  const cycleStatus = (id: number) => {
-    setPlayers(players.map(p => {
-      if (p.id === id) {
-        const statuses: Player['status'][] = ['Remaining', 'Murdered', 'Banished'];
-        const nextStatus = statuses[(statuses.indexOf(p.status) + 1) % statuses.length];
-        return { ...p, status: nextStatus };
-      }
-      return p;
-    }));
+  useEffect(() => {
+    localStorage.setItem('traitors_episode', episode.toString());
+  }, [episode]);
+
+  const updateStatus = (id: number, status: Player['status']) => {
+    if (status !== 'Remaining') {
+      setAnimatingId({ id, type: status === 'Murdered' ? 'murder' : 'banish' });
+      setTimeout(() => {
+        setPlayers(prev => prev.map(p => p.id === id ? { ...p, status } : p));
+        setAnimatingId(null);
+      }, 1000);
+    } else {
+      setPlayers(prev => prev.map(p => p.id === id ? { ...p, status } : p));
+    }
   };
 
   const cycleRole = (id: number) => {
@@ -72,8 +83,9 @@ function App() {
   };
 
   const resetData = () => {
-    if (window.confirm("Reset to current show standings? This will overwrite your local changes.")) {
+    if (window.confirm("Reset all tracking data? This cannot be undone.")) {
       setPlayers(initialPlayers);
+      setEpisode(1);
     }
   };
 
@@ -84,13 +96,26 @@ function App() {
     <div className="dashboard">
       <header>
         <div className="header-content">
-          <h1>The Traitors Season 4</h1>
+          <div className="title-row">
+            <h1>The Traitors Season 4</h1>
+            <div className="episode-selector">
+              <label>EPISODE</label>
+              <select value={episode} onChange={(e) => setEpisode(Number(e.target.value))}>
+                {[...Array(12)].map((_, i) => (
+                  <option key={i + 1} value={i + 1}>{i + 1}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="how-to">
+            <p><strong>How to Play:</strong> Click <strong>Ghost/Shield/Sword</strong> to mark suspicions. Use <strong>Murder</strong> or <strong>Banish</strong> to move players to the Graveyard as they fall.</p>
+          </div>
           <div className="stats">
             <div className="stat-item"><Heart className="icon" /> {remaining.length} IN</div>
             <div className="stat-item"><Skull className="icon" /> {eliminated.length} OUT</div>
           </div>
         </div>
-        <button className="reset-btn" onClick={resetData}>Sync to Show</button>
+        <button className="reset-btn" onClick={resetData}>Reset Game</button>
       </header>
 
       <main>
@@ -98,10 +123,13 @@ function App() {
           <h2>The Council Chamber</h2>
           <div className="grid">
             {remaining.map(player => (
-              <div key={player.id} className={`player-card ${player.role.toLowerCase()}`}>
+              <div 
+                key={player.id} 
+                className={`player-card ${player.role.toLowerCase()} ${animatingId?.id === player.id ? animatingId.type : ''}`}
+              >
                 <div className="image-container">
                   <img src={`${PEACOCK_BASE}${player.imageUrl}`} alt={player.name} />
-                  <div className="role-badge" onClick={() => cycleRole(player.id)}>
+                  <div className="role-badge" title="Cycle Role: Unknown (Ghost), Faithful (Shield), Traitor (Sword)" onClick={() => cycleRole(player.id)}>
                     {player.role === 'Faithful' && <Shield className="role-icon faithful" />}
                     {player.role === 'Traitor' && <Sword className="role-icon traitor" />}
                     {player.role === 'Unknown' && <Ghost className="role-icon unknown" />}
@@ -109,7 +137,10 @@ function App() {
                 </div>
                 <div className="player-info">
                   <h3>{player.name}</h3>
-                  <button className="status-btn" onClick={() => cycleStatus(player.id)}>Eliminate</button>
+                  <div className="action-buttons">
+                    <button className="status-btn murder" onClick={() => updateStatus(player.id, 'Murdered')}>Murder</button>
+                    <button className="status-btn banish" onClick={() => updateStatus(player.id, 'Banished')}>Banish</button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -124,14 +155,14 @@ function App() {
                 <div key={player.id} className={`player-card gray ${player.role.toLowerCase()}`}>
                   <div className="image-container">
                     <img src={`${PEACOCK_BASE}${player.imageUrl}`} alt={player.name} />
-                    <div className="status-overlay">{player.status.toUpperCase()}</div>
+                    <div className={`status-overlay ${player.status.toLowerCase()}`}>{player.status.toUpperCase()}</div>
                     <div className="role-reveal">
                       {player.role === 'Traitor' ? 'TRAITOR' : 'FAITHFUL'}
                     </div>
                   </div>
                   <div className="player-info">
                     <h3>{player.name}</h3>
-                    <button className="status-btn" onClick={() => cycleStatus(player.id)}>Revive</button>
+                    <button className="status-btn revive" onClick={() => updateStatus(player.id, 'Remaining')}>Revive</button>
                   </div>
                 </div>
               ))}
