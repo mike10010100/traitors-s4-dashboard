@@ -153,7 +153,7 @@ function App() {
       setTimeout(() => {
         setPlayers(prev => prev.map(p => p.id === id ? { ...p, status } : p));
         setAnimatingId(null);
-      }, 800);
+      }, 1200);
     } else {
       setPlayers(prev => prev.map(p => p.id === id ? { ...p, status } : p));
     }
