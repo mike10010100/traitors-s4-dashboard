@@ -215,9 +215,13 @@ function App() {
               <span>{playMode.toUpperCase()} MODE</span>
             </div>
             <div className="episode-controls">
-              <div className="episode-selector">
+              <div className={`episode-selector ${playMode === 'Detective' ? 'disabled' : ''}`}>
                 <label>EPISODE</label>
-                <select value={episode} onChange={(e) => handleEpisodeChange(Number(e.target.value))}>
+                <select 
+                  value={episode} 
+                  onChange={(e) => handleEpisodeChange(Number(e.target.value))}
+                  disabled={playMode === 'Detective'}
+                >
                   {[...Array(12)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>{i + 1}</option>
                   ))}

@@ -136,6 +136,18 @@ header {
   border: 1px solid var(--gold-accent);
 }
 
+.episode-selector.disabled {
+  opacity: 0.4;
+  border-color: #333;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: not-allowed;
+}
+
+.episode-selector.disabled select {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .episode-selector label {
   font-size: 0.7rem;
   font-weight: 900;
