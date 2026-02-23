@@ -204,37 +204,64 @@ main {
 
 /* Animations */
 .player-card.murder {
-  animation: smash-shake 0.5s ease-in-out;
+  animation: smash-impact 0.4s ease-out forwards;
   z-index: 100;
 }
 
-.player-card.murder::after {
-  content: '';
+.shatter-container {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='rgba(255,255,255,0.8)' stroke-width='1.5' fill='none'%3E%3Cpath d='M50 50 L10 10 M50 50 L90 10 M50 50 L90 90 M50 50 L10 90 M50 50 L50 0 M50 50 L100 50 M50 50 L50 100 M50 50 L0 50'/%3E%3Cpath d='M40 40 L60 45 L55 60 L35 55 Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: cover;
-  opacity: 0;
-  animation: crack-appear 0.2s 0.2s forwards;
+  inset: 0;
+  z-index: 50;
   pointer-events: none;
-  z-index: 20;
 }
 
-@keyframes smash-shake {
+.shard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  background: var(--card-bg);
+  border: 1px solid #555;
+  opacity: 0;
+}
+
+.s1 { clip-path: polygon(0 0, 100% 0, 50% 50%); animation: shard-1 0.6s 0.2s ease-out forwards; }
+.s2 { clip-path: polygon(100% 0, 100% 100%, 50% 50%); animation: shard-2 0.6s 0.2s ease-out forwards; }
+.s3 { clip-path: polygon(100% 100%, 0 100%, 50% 50%); animation: shard-3 0.6s 0.2s ease-out forwards; }
+.s4 { clip-path: polygon(0 100%, 0 0, 50% 50%); animation: shard-4 0.6s 0.2s ease-out forwards; }
+.s5 { clip-path: polygon(20% 20%, 80% 20%, 50% 50%); background: #8b0000; animation: shard-5 0.6s 0.1s ease-out forwards; }
+.s6 { clip-path: polygon(30% 70%, 70% 70%, 50% 50%); background: #333; animation: shard-6 0.6s 0.3s ease-out forwards; }
+
+@keyframes smash-impact {
   0% { transform: scale(1); }
-  20% { transform: scale(1.1) rotate(3deg); }
-  40% { transform: scale(1.1) rotate(-3deg); }
-  60% { transform: scale(1.1) rotate(3deg); }
-  80% { transform: scale(1.1) rotate(-3deg); }
-  100% { transform: scale(1); }
+  50% { transform: scale(1.15); filter: brightness(1.5); }
+  100% { transform: scale(0); opacity: 0; }
 }
 
-@keyframes crack-appear {
-  0% { opacity: 0; transform: scale(1.5); }
-  100% { opacity: 1; transform: scale(1); }
+@keyframes shard-1 {
+  0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; }
+  100% { transform: translate(-150%, -200%) rotate(-45deg); opacity: 0; }
+}
+@keyframes shard-2 {
+  0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; }
+  100% { transform: translate(150%, -150%) rotate(45deg); opacity: 0; }
+}
+@keyframes shard-3 {
+  0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; }
+  100% { transform: translate(120%, 180%) rotate(90deg); opacity: 0; }
+}
+@keyframes shard-4 {
+  0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; }
+  100% { transform: translate(-180%, 120%) rotate(-90deg); opacity: 0; }
+}
+@keyframes shard-5 {
+  0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; }
+  100% { transform: translate(0%, -250%) rotate(180deg); opacity: 0; }
+}
+@keyframes shard-6 {
+  0% { transform: translate(-50%, -50%) rotate(0); opacity: 1; }
+  100% { transform: translate(0%, 250%) rotate(-180deg); opacity: 0; }
 }
 
 .player-card.banish {

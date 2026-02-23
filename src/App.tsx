@@ -101,14 +101,12 @@ function App() {
     localStorage.setItem('traitors_episode', episode.toString());
   }, [episode]);
 
-  const syncToEpisode = () => {
-    if (!window.confirm(`Reset state to start of Episode ${episode}? This will overwrite your manual tracking.`)) return;
-
+  const syncToEpisode = (targetEpisode: number) => {
     const newPlayers = initialPlayers.map(p => {
       let playerState: Partial<Player> = { status: 'Remaining', role: 'Unknown' };
       
-      // Apply all eliminations up to the start of current episode
-      for (let i = 1; i < episode; i++) {
+      // Apply all eliminations that happened BEFORE the target episode
+      for (let i = 1; i < targetEpisode; i++) {
         const episodeEliminations = SYNC_DATA[i] || [];
         const match = episodeEliminations.find(e => e.id === p.id);
         if (match) {
@@ -116,21 +114,31 @@ function App() {
         }
       }
 
-      // If we are past episode 3, audience knows certain traitors
-      if (episode >= 3 && KNOWN_TRAITORS.includes(p.id)) {
-        playerState.role = 'Traitor';
-      }
-      
-      // If they are still remaining and not a known traitor, mark as Faithful once we know
-      if (episode >= 3 && playerState.role === 'Unknown' && !KNOWN_TRAITORS.includes(p.id)) {
-          // In reality, audience knows everyone's role eventually
+      // Role reveals based on episode
+      // By Episode 2 audience knows initial Traitors
+      if (targetEpisode >= 2) {
+        if (KNOWN_TRAITORS.includes(p.id)) {
+          playerState.role = 'Traitor';
+        } else if (p.id === 6 || p.id === 9 || p.id === 18) {
+          // Candiace, Donna, Lisa were also traitors
+          playerState.role = 'Traitor';
+        } else {
+          // Everyone else known to be Faithful
           playerState.role = 'Faithful';
+        }
       }
 
       return { ...p, ...playerState };
     });
 
     setPlayers(newPlayers);
+  };
+
+  const handleEpisodeChange = (newEp: number) => {
+    setEpisode(newEp);
+    if (window.confirm(`Sync dashboard to the start of Episode ${newEp}?`)) {
+      syncToEpisode(newEp);
+    }
   };
 
   const updateStatus = (id: number, status: Player['status']) => {
@@ -175,17 +183,17 @@ function App() {
             <div className="episode-controls">
               <div className="episode-selector">
                 <label>EPISODE</label>
-                <select value={episode} onChange={(e) => setEpisode(Number(e.target.value))}>
+                <select value={episode} onChange={(e) => handleEpisodeChange(Number(e.target.value))}>
                   {[...Array(12)].map((_, i) => (
                     <option key={i + 1} value={i + 1}>{i + 1}</option>
                   ))}
                 </select>
               </div>
-              <button className="sync-btn" onClick={syncToEpisode}>Sync to Show</button>
+              <button className="sync-btn" onClick={() => syncToEpisode(episode)}>Force Sync</button>
             </div>
           </div>
           <div className="how-to">
-            <p><strong>How to Play:</strong> Use the <strong>Episode Selector</strong> and <strong>Sync to Show</strong> to catch up to real-time, or track manually: click the <strong>Role Icon</strong> to mark suspicions and <strong>Murder/Banish</strong> as players fall.</p>
+            <p><strong>How to Play:</strong> Select an <strong>Episode</strong> to auto-sync the board. Track manually by clicking <strong>Role Icons</strong> and using <strong>Murder/Banish</strong> to move players to the Graveyard.</p>
           </div>
           <div className="stats">
             <div className="stat-item"><Heart className="icon" /> {remaining.length} IN</div>
@@ -204,6 +212,16 @@ function App() {
                 key={player.id} 
                 className={`player-card ${player.role.toLowerCase()} ${animatingId?.id === player.id ? animatingId.type : ''}`}
               >
+                {animatingId?.id === player.id && animatingId.type === 'murder' && (
+                  <div className="shatter-container">
+                    <div className="shard s1"></div>
+                    <div className="shard s2"></div>
+                    <div className="shard s3"></div>
+                    <div className="shard s4"></div>
+                    <div className="shard s5"></div>
+                    <div className="shard s6"></div>
+                  </div>
+                )}
                 <div className="image-container">
                   <img src={`${PEACOCK_BASE}${player.imageUrl}`} alt={player.name} />
                   <div className="role-badge" title="Cycle Role: Unknown (Ghost), Faithful (Shield), Traitor (Sword)" onClick={() => cycleRole(player.id)}>
