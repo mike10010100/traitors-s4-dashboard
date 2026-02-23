@@ -12,6 +12,7 @@ interface Player {
 
 const PEACOCK_BASE = 'https://www.peacocktv.com';
 const STORAGE_KEY = 'traitors_s4_state';
+const MODE_KEY = 'traitors_mode';
 
 const initialPlayers: Player[] = [
   { id: 1, name: "Natalie Anderson", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00016.png", role: 'Unknown', status: 'Remaining' },
@@ -40,7 +41,7 @@ const initialPlayers: Player[] = [
 ];
 
 const SYNC_DATA: Record<number, Partial<Player>[]> = {
-  1: [], // All remaining, roles unknown to audience initially
+  1: [], 
   2: [
     { id: 20, status: 'Murdered', role: 'Faithful' }, // Ian Terry
     { id: 23, status: 'Banished', role: 'Faithful' }, // Porsha Williams
@@ -62,21 +63,23 @@ const SYNC_DATA: Record<number, Partial<Player>[]> = {
     { id: 7, status: 'Banished', role: 'Faithful' }, // Ron Funches
   ],
   7: [
-    { id: 18, status: 'Banished', role: 'Traitor' }, // Lisa Rinna
     { id: 21, status: 'Murdered', role: 'Faithful' }, // Colton Underwood
+    { id: 18, status: 'Banished', role: 'Traitor' }, // Lisa Rinna
   ],
   8: [
-    { id: 6, status: 'Banished', role: 'Traitor' }, // Candiace Dillard
     { id: 12, status: 'Murdered', role: 'Faithful' }, // Dorinda Medley
+    { id: 6, status: 'Banished', role: 'Traitor' }, // Candiace Dillard
   ],
   9: [
-    { id: 5, status: 'Banished', role: 'Faithful' }, // Stephen Colletti
     { id: 10, status: 'Murdered', role: 'Faithful' }, // Kristen Kish
+    { id: 5, status: 'Banished', role: 'Faithful' }, // Stephen Colletti
   ],
   10: [
     { id: 1, status: 'Banished', role: 'Faithful' }, // Natalie Anderson
   ],
 };
+
+type PlayMode = 'Detective' | 'Audience';
 
 function App() {
   const [players, setPlayers] = useState<Player[]>(() => {
@@ -86,6 +89,10 @@ function App() {
 
   const [episode, setEpisode] = useState(() => {
     return Number(localStorage.getItem('traitors_episode') || 1);
+  });
+
+  const [playMode, setPlayMode] = useState<PlayMode>(() => {
+    return (localStorage.getItem(MODE_KEY) as PlayMode) || 'Detective';
   });
 
   const [animatingId, setAnimatingId] = useState<{id: number, type: 'murder' | 'banish'} | null>(null);
@@ -98,7 +105,13 @@ function App() {
     localStorage.setItem('traitors_episode', episode.toString());
   }, [episode]);
 
-  const syncToEpisode = (targetEpisode: number) => {
+  useEffect(() => {
+    localStorage.setItem(MODE_KEY, playMode);
+  }, [playMode]);
+
+  const syncToEpisode = (targetEpisode: number, force = false) => {
+    if (playMode === 'Detective' && !force) return;
+
     const newPlayers = initialPlayers.map(p => {
       let playerState: Player = { ...p, status: 'Remaining', role: 'Unknown' };
       
@@ -108,30 +121,21 @@ function App() {
         const match = episodeEliminations.find(e => e.id === p.id);
         if (match) {
           playerState.status = match.status || playerState.status;
-          // When they are eliminated, we always know their role
           playerState.role = match.role || playerState.role;
         }
       }
 
-      // Live Role Reveals (Audience Knowledge)
-      // Episode 2: Initial Traitors revealed (except Secret Traitor)
-      if (targetEpisode >= 2) {
-        if ([6, 17, 18].includes(p.id)) { // Candiace, Rob R, Lisa
-          playerState.role = 'Traitor';
-        } else if (p.role === 'Unknown' && p.status === 'Remaining') {
-          // If audience knows initial traitors, others are assumed faithful
-          playerState.role = 'Faithful';
+      // Role Reveals in Audience Mode
+      if (playMode === 'Audience') {
+        // Episode 2: Initial Traitors revealed (Candiace, Rob R, Lisa)
+        if (targetEpisode >= 2) {
+          if ([6, 17, 18].includes(p.id)) playerState.role = 'Traitor';
+          else if (playerState.status === 'Remaining') playerState.role = 'Faithful';
         }
-      }
-
-      // Episode 4: Donna Kelce revealed (she was banished in Ep 3)
-      if (targetEpisode >= 4 && p.id === 9) {
-        playerState.role = 'Traitor';
-      }
-
-      // Episode 10: Eric Nam revealed (recruited in Ep 9)
-      if (targetEpisode >= 10 && p.id === 15) {
-        playerState.role = 'Traitor';
+        // Episode 4: Donna revealed (After Ep 3 banishment)
+        if (targetEpisode >= 4 && p.id === 9) playerState.role = 'Traitor';
+        // Episode 10: Eric Nam revealed (After Ep 9 recruitment)
+        if (targetEpisode >= 10 && p.id === 15) playerState.role = 'Traitor';
       }
 
       return playerState;
@@ -142,8 +146,25 @@ function App() {
 
   const handleEpisodeChange = (newEp: number) => {
     setEpisode(newEp);
-    if (window.confirm(`Sync dashboard to the start of Episode ${newEp}?`)) {
+    if (playMode === 'Audience') {
       syncToEpisode(newEp);
+    } else {
+      if (window.confirm(`Sync dashboard to start of Episode ${newEp}? (Switches to Audience Mode)`)) {
+        setPlayMode('Audience');
+        syncToEpisode(newEp, true);
+      }
+    }
+  };
+
+  const toggleMode = () => {
+    const nextMode = playMode === 'Detective' ? 'Audience' : 'Detective';
+    if (nextMode === 'Audience') {
+      if (window.confirm("Switch to Audience Mode? This will sync the board to the current show state.")) {
+        setPlayMode(nextMode);
+        syncToEpisode(episode, true);
+      }
+    } else {
+      setPlayMode(nextMode);
     }
   };
 
@@ -174,6 +195,7 @@ function App() {
     if (window.confirm("Reset all tracking data to blank?")) {
       setPlayers(initialPlayers);
       setEpisode(1);
+      setPlayMode('Detective');
     }
   };
 
@@ -185,7 +207,13 @@ function App() {
       <header>
         <div className="header-content">
           <div className="title-row">
-            <h1>The Traitors Season 4</h1>
+            <h1>The Traitors S4</h1>
+            <div className="mode-toggle" onClick={toggleMode}>
+              <div className={`toggle-track ${playMode.toLowerCase()}`}>
+                <div className="toggle-thumb"></div>
+              </div>
+              <span>{playMode.toUpperCase()} MODE</span>
+            </div>
             <div className="episode-controls">
               <div className="episode-selector">
                 <label>EPISODE</label>
@@ -195,11 +223,14 @@ function App() {
                   ))}
                 </select>
               </div>
-              <button className="sync-btn" onClick={() => syncToEpisode(episode)}>Force Sync</button>
             </div>
           </div>
           <div className="how-to">
-            <p><strong>How to Play:</strong> Select an <strong>Episode</strong> to auto-sync the board. Track manually by clicking <strong>Role Icons</strong> and using <strong>Murder/Banish</strong> to move players to the Graveyard.</p>
+            <p>
+              {playMode === 'Detective' 
+                ? "DETECTIVE MODE: Track suspicions yourself! Mark roles manually and smash cards as you watch."
+                : "AUDIENCE MODE: Follow the show! The board syncs automatically to each episode's starting state."}
+            </p>
           </div>
           <div className="stats">
             <div className="stat-item"><Heart className="icon" /> {remaining.length} IN</div>
