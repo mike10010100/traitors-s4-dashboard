@@ -78,9 +78,6 @@ const SYNC_DATA: Record<number, Partial<Player>[]> = {
   ],
 };
 
-// Known Traitors for later episodes
-const KNOWN_TRAITORS = [15, 17]; // Eric Nam, Rob Rausch
-
 function App() {
   const [players, setPlayers] = useState<Player[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -103,32 +100,41 @@ function App() {
 
   const syncToEpisode = (targetEpisode: number) => {
     const newPlayers = initialPlayers.map(p => {
-      let playerState: Partial<Player> = { status: 'Remaining', role: 'Unknown' };
+      let playerState: Player = { ...p, status: 'Remaining', role: 'Unknown' };
       
-      // Apply all eliminations that happened BEFORE the target episode
+      // Apply eliminations BEFORE target episode
       for (let i = 1; i < targetEpisode; i++) {
         const episodeEliminations = SYNC_DATA[i] || [];
         const match = episodeEliminations.find(e => e.id === p.id);
         if (match) {
-          playerState = { ...playerState, ...match };
+          playerState.status = match.status || playerState.status;
+          // When they are eliminated, we always know their role
+          playerState.role = match.role || playerState.role;
         }
       }
 
-      // Role reveals based on episode
-      // By Episode 2 audience knows initial Traitors
+      // Live Role Reveals (Audience Knowledge)
+      // Episode 2: Initial Traitors revealed (except Secret Traitor)
       if (targetEpisode >= 2) {
-        if (KNOWN_TRAITORS.includes(p.id)) {
+        if ([6, 17, 18].includes(p.id)) { // Candiace, Rob R, Lisa
           playerState.role = 'Traitor';
-        } else if (p.id === 6 || p.id === 9 || p.id === 18) {
-          // Candiace, Donna, Lisa were also traitors
-          playerState.role = 'Traitor';
-        } else {
-          // Everyone else known to be Faithful
+        } else if (p.role === 'Unknown' && p.status === 'Remaining') {
+          // If audience knows initial traitors, others are assumed faithful
           playerState.role = 'Faithful';
         }
       }
 
-      return { ...p, ...playerState };
+      // Episode 4: Donna Kelce revealed (she was banished in Ep 3)
+      if (targetEpisode >= 4 && p.id === 9) {
+        playerState.role = 'Traitor';
+      }
+
+      // Episode 10: Eric Nam revealed (recruited in Ep 9)
+      if (targetEpisode >= 10 && p.id === 15) {
+        playerState.role = 'Traitor';
+      }
+
+      return playerState;
     });
 
     setPlayers(newPlayers);
