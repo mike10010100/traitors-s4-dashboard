@@ -39,6 +39,48 @@ const initialPlayers: Player[] = [
   { id: 23, name: "Porsha Williams", imageUrl: "/sites/peacock/files/styles/scale_600/public/2025/11/nup_209285_00017.png", role: 'Unknown', status: 'Remaining' },
 ];
 
+const SYNC_DATA: Record<number, Partial<Player>[]> = {
+  1: [], // All remaining, roles unknown to audience initially
+  2: [
+    { id: 20, status: 'Murdered', role: 'Faithful' }, // Ian Terry
+    { id: 23, status: 'Banished', role: 'Faithful' }, // Porsha Williams
+  ],
+  3: [
+    { id: 4, status: 'Murdered', role: 'Faithful' }, // Rob Cesternino
+    { id: 9, status: 'Banished', role: 'Traitor' }, // Donna Kelce
+  ],
+  4: [
+    { id: 19, status: 'Murdered', role: 'Faithful' }, // Caroline Stanbury
+    { id: 13, status: 'Banished', role: 'Faithful' }, // Tiffany Mitchell
+  ],
+  5: [
+    { id: 14, status: 'Murdered', role: 'Faithful' }, // Monét X Change
+    { id: 16, status: 'Banished', role: 'Faithful' }, // Michael Rapaport
+  ],
+  6: [
+    { id: 2, status: 'Murdered', role: 'Faithful' }, // Yam Yam
+    { id: 7, status: 'Banished', role: 'Faithful' }, // Ron Funches
+  ],
+  7: [
+    { id: 18, status: 'Banished', role: 'Traitor' }, // Lisa Rinna
+    { id: 21, status: 'Murdered', role: 'Faithful' }, // Colton Underwood
+  ],
+  8: [
+    { id: 6, status: 'Banished', role: 'Traitor' }, // Candiace Dillard
+    { id: 12, status: 'Murdered', role: 'Faithful' }, // Dorinda Medley
+  ],
+  9: [
+    { id: 5, status: 'Banished', role: 'Faithful' }, // Stephen Colletti
+    { id: 10, status: 'Murdered', role: 'Faithful' }, // Kristen Kish
+  ],
+  10: [
+    { id: 1, status: 'Banished', role: 'Faithful' }, // Natalie Anderson
+  ],
+};
+
+// Known Traitors for later episodes
+const KNOWN_TRAITORS = [15, 17]; // Eric Nam, Rob Rausch
+
 function App() {
   const [players, setPlayers] = useState<Player[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -59,13 +101,45 @@ function App() {
     localStorage.setItem('traitors_episode', episode.toString());
   }, [episode]);
 
+  const syncToEpisode = () => {
+    if (!window.confirm(`Reset state to start of Episode ${episode}? This will overwrite your manual tracking.`)) return;
+
+    const newPlayers = initialPlayers.map(p => {
+      let playerState: Partial<Player> = { status: 'Remaining', role: 'Unknown' };
+      
+      // Apply all eliminations up to the start of current episode
+      for (let i = 1; i < episode; i++) {
+        const episodeEliminations = SYNC_DATA[i] || [];
+        const match = episodeEliminations.find(e => e.id === p.id);
+        if (match) {
+          playerState = { ...playerState, ...match };
+        }
+      }
+
+      // If we are past episode 3, audience knows certain traitors
+      if (episode >= 3 && KNOWN_TRAITORS.includes(p.id)) {
+        playerState.role = 'Traitor';
+      }
+      
+      // If they are still remaining and not a known traitor, mark as Faithful once we know
+      if (episode >= 3 && playerState.role === 'Unknown' && !KNOWN_TRAITORS.includes(p.id)) {
+          // In reality, audience knows everyone's role eventually
+          playerState.role = 'Faithful';
+      }
+
+      return { ...p, ...playerState };
+    });
+
+    setPlayers(newPlayers);
+  };
+
   const updateStatus = (id: number, status: Player['status']) => {
     if (status !== 'Remaining') {
       setAnimatingId({ id, type: status === 'Murdered' ? 'murder' : 'banish' });
       setTimeout(() => {
         setPlayers(prev => prev.map(p => p.id === id ? { ...p, status } : p));
         setAnimatingId(null);
-      }, 1000);
+      }, 800);
     } else {
       setPlayers(prev => prev.map(p => p.id === id ? { ...p, status } : p));
     }
@@ -83,7 +157,7 @@ function App() {
   };
 
   const resetData = () => {
-    if (window.confirm("Reset all tracking data? This cannot be undone.")) {
+    if (window.confirm("Reset all tracking data to blank?")) {
       setPlayers(initialPlayers);
       setEpisode(1);
     }
@@ -98,24 +172,27 @@ function App() {
         <div className="header-content">
           <div className="title-row">
             <h1>The Traitors Season 4</h1>
-            <div className="episode-selector">
-              <label>EPISODE</label>
-              <select value={episode} onChange={(e) => setEpisode(Number(e.target.value))}>
-                {[...Array(12)].map((_, i) => (
-                  <option key={i + 1} value={i + 1}>{i + 1}</option>
-                ))}
-              </select>
+            <div className="episode-controls">
+              <div className="episode-selector">
+                <label>EPISODE</label>
+                <select value={episode} onChange={(e) => setEpisode(Number(e.target.value))}>
+                  {[...Array(12)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))}
+                </select>
+              </div>
+              <button className="sync-btn" onClick={syncToEpisode}>Sync to Show</button>
             </div>
           </div>
           <div className="how-to">
-            <p><strong>How to Play:</strong> Click <strong>Ghost/Shield/Sword</strong> to mark suspicions. Use <strong>Murder</strong> or <strong>Banish</strong> to move players to the Graveyard as they fall.</p>
+            <p><strong>How to Play:</strong> Use the <strong>Episode Selector</strong> and <strong>Sync to Show</strong> to catch up to real-time, or track manually: click the <strong>Role Icon</strong> to mark suspicions and <strong>Murder/Banish</strong> as players fall.</p>
           </div>
           <div className="stats">
             <div className="stat-item"><Heart className="icon" /> {remaining.length} IN</div>
             <div className="stat-item"><Skull className="icon" /> {eliminated.length} OUT</div>
           </div>
         </div>
-        <button className="reset-btn" onClick={resetData}>Reset Game</button>
+        <button className="reset-btn" onClick={resetData}>Clear All</button>
       </header>
 
       <main>

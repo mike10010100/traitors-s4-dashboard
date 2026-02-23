@@ -48,6 +48,32 @@ header {
   flex-wrap: wrap;
 }
 
+.episode-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sync-btn {
+  background: var(--gold-accent);
+  color: black;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.sync-btn:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
 .episode-selector {
   display: flex;
   align-items: center;
@@ -163,8 +189,8 @@ main {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
 }
 
 .player-card {
@@ -176,34 +202,49 @@ main {
   position: relative;
 }
 
-.player-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.2);
-}
-
-.player-card.traitor { border-color: var(--traitor-red); }
-.player-card.faithful { border-color: var(--faithful-blue); }
-
 /* Animations */
 .player-card.murder {
-  animation: murder-strike 1s forwards;
+  animation: smash-shake 0.5s ease-in-out;
+  z-index: 100;
+}
+
+.player-card.murder::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='rgba(255,255,255,0.8)' stroke-width='1.5' fill='none'%3E%3Cpath d='M50 50 L10 10 M50 50 L90 10 M50 50 L90 90 M50 50 L10 90 M50 50 L50 0 M50 50 L100 50 M50 50 L50 100 M50 50 L0 50'/%3E%3Cpath d='M40 40 L60 45 L55 60 L35 55 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover;
+  opacity: 0;
+  animation: crack-appear 0.2s 0.2s forwards;
+  pointer-events: none;
+  z-index: 20;
+}
+
+@keyframes smash-shake {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.1) rotate(3deg); }
+  40% { transform: scale(1.1) rotate(-3deg); }
+  60% { transform: scale(1.1) rotate(3deg); }
+  80% { transform: scale(1.1) rotate(-3deg); }
+  100% { transform: scale(1); }
+}
+
+@keyframes crack-appear {
+  0% { opacity: 0; transform: scale(1.5); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .player-card.banish {
-  animation: banish-gavel 1s forwards;
+  animation: banish-slide 0.8s ease-in forwards;
 }
 
-@keyframes murder-strike {
-  0% { transform: scale(1); filter: brightness(1); }
-  20% { transform: scale(1.05) rotate(2deg); filter: brightness(1.5) sepia(1) hue-rotate(-50deg); }
-  100% { transform: scale(0.9) translateY(20px); opacity: 0; filter: brightness(0.2) grayscale(1); }
-}
-
-@keyframes banish-gavel {
-  0% { transform: translateY(0); }
-  30% { transform: translateY(-20px) rotate(-5deg); }
-  60% { transform: translateY(10px) rotate(5deg); }
-  100% { transform: scale(0.5); opacity: 0; }
+@keyframes banish-slide {
+  0% { transform: translateX(0); opacity: 1; }
+  20% { transform: translateX(-15px); }
+  100% { transform: translateX(100vw); opacity: 0; }
 }
 
 .image-container {
@@ -337,7 +378,43 @@ main {
   color: white;
 }
 
-@media (max-width: 768px) {
-  header { padding: 1rem; }
-  h1 { font-size: 1.5rem; }
+@media (max-width: 650px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.5rem 1rem;
+  }
+
+  .title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .how-to {
+    font-size: 0.8rem;
+  }
+
+  .stats {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
 }
