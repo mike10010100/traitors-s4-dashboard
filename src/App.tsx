@@ -113,7 +113,7 @@ function App() {
     if (playMode === 'Detective' && !force) return;
 
     const newPlayers = initialPlayers.map(p => {
-      let playerState: Player = { ...p, status: 'Remaining', role: 'Unknown' };
+      const playerState: Player = { ...p, status: 'Remaining', role: 'Unknown' };
       
       // Apply eliminations BEFORE target episode
       for (let i = 1; i < targetEpisode; i++) {

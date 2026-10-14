@@ -10,22 +10,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.446.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "lucide-react": "^1.55.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@types/react": "^18.3.10",
-    "@types/react-dom": "^18.3.0",
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@typescript-eslint/eslint-plugin": "^8.71.1",
     "@typescript-eslint/parser": "^8.71.1",
-    "@vitejs/plugin-react": "^4.3.2",
-    "eslint": "^9.11.1",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "@typescript/typescript6": "^6.0.2",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
-    "typescript": "^5.6.2",
+    "typescript": "^7.0.2",
     "typescript-eslint": "^8.71.1",
-    "vite": "^5.4.8"
+    "vite": "^8.3.4"
+  },
+  "overrides": {
+    "typescript": "$typescript"
   }
 }
